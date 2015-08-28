@@ -10,7 +10,6 @@ var MapView = function() {
 MapView.prototype = {
   renderMarker: function(marker) {
     var self = this;
-    console.log(marker)
     marker.marker.addTo(self.map)
     marker.marker.on('dragend', function(){
       var temp = marker.marker.getLatLng();

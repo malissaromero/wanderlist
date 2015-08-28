@@ -60,7 +60,6 @@ Pin.show = function(pinId){
 Pin.getPhotos = function(pinId){
   var request = $.getJSON("http://localhost:3000/pins/"+pinId+"/photos/")
   .then(function(response) {
-    console.log(response)
     return response
   }).fail(function(response){
     console.log("failed to fetch photos from pin with id: "+pinId);

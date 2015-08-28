@@ -40,7 +40,6 @@ router.get("/users/:userId/pins/:id", function(req,res){
   Pin.findById(req.params.id).then(function(pin){
     if(!pin) return error(res, "not found");
     res.json(pin);
-    console.log(req.params.userId)
   });
 });
 

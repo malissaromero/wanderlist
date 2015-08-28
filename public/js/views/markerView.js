@@ -16,7 +16,6 @@ var MarkerView = function(pin){
 
   this.pin = pin;
 
-  console.log(pin)
   if(pin.isRed == "t"){
     this.marker = L.marker([pin.latitude, pin.longitude], {
       icon: redPin,

@@ -23,7 +23,6 @@ var passport = require("passport");
 var TwitterStrategy = require("passport-twitter").Strategy;
 var fs = require("fs")
 if (fs.existsSync("./env.js")){
-  console.log("yes")
   var env = require("./env");
 }
 else {
@@ -64,18 +63,11 @@ app.get("/auth/twitter/login", passport.authenticate("twitter"));
 app.get("/auth/twitter/callback",
   passport.authenticate("twitter", { failureRedirect: "/login" }),
   function(req, res) {
-    // console.log(req.session)
-    // console.log(req.session.passport.user.id)
-    // console.log("HELLLLLOOOOOOOOOO")
-    console.log("------------------------------------------------")
-    console.log("req.session.passport.user.id: "+req.session.passport.user.id)
-    console.log("------------------------------------------------")
     User.find({
       where: {
         "twitter_id": req.session.passport.user.id
       }
     }).then(function(user){
-      console.log(user);
       if(!user){
         User.create({
           twitter_id: req.session.passport.user.id

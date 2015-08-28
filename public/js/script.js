@@ -35,7 +35,6 @@ Pin.whichUser().then(function(userId){
     if(e.which == 13){
       e.preventDefault();
       var user_search = $(".form-control").val()
-      console.log("user_search is "+user_search)
       var request = $.getJSON("https://api.mapbox.com/v4/geocode/mapbox.places/"+user_search+".json?access_token=pk.eyJ1IjoiYWxleGJhbm5vbiIsImEiOiIzM2I3MWU4NjhlNjc5ODYzN2NjMWFhYzU4OWIzOGYzYiJ9.zVY-I01f5Pie1XCaA0Laog")
       .then(function(response){
         var search_location = response.features[0].geometry.coordinates
@@ -75,32 +74,18 @@ Pin.whichUser().then(function(userId){
     current_longitude = 2.0833;
   });
 
-  // function newPinWindow() {
-  //   $(".popup_bar").show()
-  //   $(".photos").html("<img class='changePhotoToOpaque' src='http://www.backpaco.com/wp-content/uploads/2015/04/yosemite-park.jpg'><div class='changeUrlBar'><input type='text' placeholder='Enter Photo URL' class='changeUrl'></div>'")
-  //   $(".title").html("<input type='text' placeholder='New Pin'>");
-  //   $(".description").val("What is on the agenda?")
-  //   console.log("The window thinks the lat/long is "+curren_latitude + " " + current_longitude)
-  //   $(".saveButton").show()
-  // }
   $(".saveButton").on("click", function() {
     var title = $(".title").children().eq(0).val()
     var latitude = current_latitude;
     var longitude = current_longitude;
     var isRed = pinIsRed;
     var description = $(".description").val()
-    console.log(title + " " + latitude + " " + longitude + " " + isRed + " " + description)
-    // console.log($(".description").children())
     $.ajax({
       url: "http://localhost:3000/users/"+current_user+"/pins",
       type: "POST",
       dataType: "json",
       data: {"title": title, "latitude": latitude, "longitude": longitude, "userId": current_user, "isRed": isRed, "description": description}
     }).done(function(response){
-      console.log(response)
-      console.log("----------")
-      // console.log(whichPin)
-      // whichPin.title = response.title + " id" + response.id
       $(".saveButton").hide;
       $(".title").html(response.title);
       $(".description").html(response.description);
