@@ -283,7 +283,9 @@ input.descrip{
         padding-bottom: 10px;
     }
 }
-
+.fa-twitter {
+  color: #55acee;
+}
 
 /*@media (min-width: 768px)
 .navbar-fixed-bottom, .navbar-fixed-top {

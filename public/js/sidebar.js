@@ -2,6 +2,9 @@ $(document).ready(function(){
   //hide sidebar and save
   $(".leaflet-tile-pane").on("click", savePinAndHide)
   function savePinAndHide() {
+    if($(".editTitle").val() == ""){
+      return
+    }
     var data = {}
     var checkId = $("#pinId").html()
     var notes = $(".editbox").val();
@@ -12,6 +15,12 @@ $(document).ready(function(){
       data: {"description": notes}
     }).done(function(response){
     })
+    var temp = event.target.title.split(" id")
+    pinId = temp[1]
+    var pict = $(".changeUrl").val();
+    if(pict){
+      postNewPhoto(pinId, pict)
+    }
     $(".popup_bar").hide();
   }
 
@@ -90,6 +99,7 @@ $(document).ready(function(){
           })
         })
       })
+
       // delete on trash click
 
       $(".glyphicon-trash").on("click", function(){
@@ -113,4 +123,44 @@ $(document).ready(function(){
       $(".description").val("What is on the agenda?")
     }
   })
+
+  //save new pin
+  $(".saveButton").on("click", function() {
+    var title = $(".title").children().eq(0).val()
+    var latitude = current_latitude;
+    var longitude = current_longitude;
+    var isRed = pinIsRed;
+    var description = $(".description").val()
+    $.ajax({
+      url: "http://localhost:3000/users/"+current_user+"/pins",
+      type: "POST",
+      dataType: "json",
+      data: {"title": title, "latitude": latitude, "longitude": longitude, "userId": current_user, "isRed": isRed, "description": description}
+    }).done(function(response){
+      $(".saveButton").hide;
+      $(".title").html(response.title);
+      $(".description").html(response.description);
+      whichPin[0].title = response.title + " id"+response.id
+      var pinId = response.id;
+      var pict = $(".changeUrl").val();
+      if (pict != ""){
+        postNewPhoto(pinId, pict)
+      }
+    })
+  })
+
+  //save new photo function
+  function postNewPhoto(pinId, pict) {
+    $.ajax({
+      url: "/pins/" + pinId + "/photos",
+      type: "POST",
+      dataType: "json",
+      data: {"photoUrl": pict, "pinId": pinId}
+    }).done(function(response){
+      $(".photos").html("<img src='"+ response.photoUrl +"' >")
+    }).fail(function(response){
+      console.log("post to pin failed");
+    })
+  }
+
 })
